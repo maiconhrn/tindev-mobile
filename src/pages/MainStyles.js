@@ -27,7 +27,8 @@ export default StyleSheet.create({
     },
     avatar: {
         flex: 1,
-        height: 300
+        height: 300,
+        backgroundColor: '#fff'
     },
     footer: {
         backgroundColor: '#fff',

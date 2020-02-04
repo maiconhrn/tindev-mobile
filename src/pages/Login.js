@@ -1,34 +1,48 @@
 import AsyncStorage from '@react-native-community/async-storage';
-import React, { useEffect, useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import { Image, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native';
 import logo from '../assets/logo.png';
-import api from '../services/api';
 import Load from '../components/Load';
+import api from '../services/api';
 
 export default function Login({ navigation }) {
     const [user, setUser] = useState('');
     const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
-        AsyncStorage.getItem('user').then(user => {
-            if (user) {
-                navigation.navigate('Main', { user });
+    useLayoutEffect(() => {
+        (async () => {
+            try {
+                setLoading(true);
+
+                const user = await AsyncStorage.getItem('user');
+
+                setLoading(false);
+
+                if (user) {
+                    navigation.navigate('Main', { user });
+                }
+            } catch (e) {
+                setLoading(false);
             }
-        });
-    }, []);
+        })();
+    }, [navigation]);
 
     async function handleLogin() {
-        setLoading(true);
-
         try {
-            const response = await api.post('/devs', { username: user });
+            setLoading(true);
+
+            const response = await api.post('/devs', {
+                username: user
+            });
 
             const { _id } = response.data;
 
             await AsyncStorage.setItem('user', _id);
 
+            setLoading(false);
+
             navigation.navigate('Main', { user: _id });
-        } finally {
+        } catch (e) {
             setLoading(false);
         }
     }
@@ -47,13 +61,13 @@ export default function Login({ navigation }) {
                 autoCorrect={false}
                 placeholder="Digite seu usuário do GitHub"
                 style={styles.input}
-                placeholderTextColor="#999"
+                placeholderTextColor="#df4723"
                 value={user}
                 onChangeText={setUser} />
 
             <TouchableOpacity style={styles.button}
                 onPress={handleLogin}>
-                <Text style={styles.buttonText}>Enviar</Text>
+                <Text style={styles.buttonText}>Entrar</Text>
             </TouchableOpacity>
         </KeyboardAvoidingView>
     );
@@ -72,7 +86,8 @@ const styles = StyleSheet.create({
         alignSelf: 'stretch',
         backgroundColor: '#fff',
         borderWidth: 1,
-        borderColor: '#ddd',
+        borderColor: '#df4723',
+        color: '#df4723',
         borderRadius: 4,
         marginTop: 20,
         paddingHorizontal: 15

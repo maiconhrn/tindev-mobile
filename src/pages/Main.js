@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-community/async-storage';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { Image, SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
 import io from 'socket.io-client';
 import dislike from '../assets/dislike.png';
@@ -17,11 +17,11 @@ export default function Main({ navigation }) {
     const [matchDev, setMatchDev] = useState(null);
     const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         (async () => {
-            setLoading(true);
-
             try {
+                setLoading(true);
+
                 const response = await api.get('/devs', {
                     headers: {
                         user: id
@@ -29,7 +29,8 @@ export default function Main({ navigation }) {
                 });
 
                 setUsers(response.data);
-            } finally {
+                setLoading(false);
+            } catch (e) {
                 setLoading(false);
             }
         })();
@@ -37,7 +38,8 @@ export default function Main({ navigation }) {
     }, [id]);
 
     useEffect(() => {
-        const socket = io('http://192.168.1.101:3333', {
+        // const socket = io('http://192.168.1.101:3333', {
+        const socket = io('https://tindev-app-backend.herokuapp.com', {
             query: { user: id }
         });
 
@@ -61,8 +63,10 @@ export default function Main({ navigation }) {
                 });
 
                 setUsers(rest);
+
+                setLoading(false);
             }
-        } finally {
+        } catch (e) {
             setLoading(false);
         }
     }
@@ -81,8 +85,9 @@ export default function Main({ navigation }) {
                 });
 
                 setUsers(rest);
+                setLoading(false);
             }
-        } finally {
+        } catch (e) {
             setLoading(false);
         }
     }
@@ -92,8 +97,10 @@ export default function Main({ navigation }) {
             setLoading(true);
             await AsyncStorage.clear();
 
+            setLoading(false);
+
             navigation.navigate('Login');
-        } finally {
+        } catch (e) {
             setLoading(false);
         }
     }

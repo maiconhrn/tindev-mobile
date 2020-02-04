@@ -1,12 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { ActivityIndicator, SafeAreaView, StyleSheet } from 'react-native';
 
 export default function Load(props) {
-    useEffect(() => {
-        console.log(props);
-
-    }, []);
-
     return props.loading && (
         <SafeAreaView style={styles.loadingStyle}>
             <ActivityIndicator
