@@ -2,12 +2,12 @@ import AsyncStorage from '@react-native-community/async-storage';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { Image, SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
 import io from 'socket.io-client';
-import dislike from '../assets/dislike.png';
-import itsamatch from '../assets/itsamatch.png';
-import like from '../assets/like.png';
-import logo from '../assets/logo.png';
-import Load from '../components/Load';
-import api from '../services/api';
+import dislike from '../../../assets/dislike.png';
+import like from '../../../assets/like.png';
+import logo from '../../../assets/logo.png';
+import api from '../../../services/api';
+import Load from '../../common/Load/Load';
+import Match from '../../common/Match/Match';
 import styles from './MainStyles';
 
 export default function Main({ navigation }) {
@@ -138,17 +138,7 @@ export default function Main({ navigation }) {
                 </View>
             )}
 
-            {matchDev && (
-                <View style={styles.matchContainer}>
-                    <Image style={styles.matchImage} source={itsamatch} />
-                    <Image style={styles.matchAvatar} source={{ uri: matchDev.avatar }} />
-                    <Text style={styles.matchName}>{matchDev.name}</Text>
-                    <Text style={styles.matchBio}>{matchDev.bio}</Text>
-                    <TouchableOpacity onPress={() => setMatchDev(null)}>
-                        <Text style={styles.closeMatch}>Fechar</Text>
-                    </TouchableOpacity>
-                </View>
-            )}
+            <Match matchDev={matchDev} setMatchDev={setMatchDev} />
         </SafeAreaView>
     );
 }

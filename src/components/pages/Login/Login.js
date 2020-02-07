@@ -1,9 +1,10 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import React, { useLayoutEffect, useState } from 'react';
-import { Image, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native';
-import logo from '../assets/logo.png';
-import Load from '../components/Load';
-import api from '../services/api';
+import { Image, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity } from 'react-native';
+import logo from '../../../assets/logo.png';
+import api from '../../../services/api';
+import Load from '../../common/Load/Load';
+import styles from './LoginStyles';
 
 export default function Login({ navigation }) {
     const [user, setUser] = useState('');
@@ -72,38 +73,3 @@ export default function Login({ navigation }) {
         </KeyboardAvoidingView>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#f5f5f5',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 30
-    },
-    input: {
-        height: 46,
-        alignSelf: 'stretch',
-        backgroundColor: '#fff',
-        borderWidth: 1,
-        borderColor: '#df4723',
-        color: '#df4723',
-        borderRadius: 4,
-        marginTop: 20,
-        paddingHorizontal: 15
-    },
-    button: {
-        height: 46,
-        alignSelf: 'stretch',
-        backgroundColor: '#df4723',
-        borderRadius: 4,
-        marginTop: 10,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    buttonText: {
-        color: '#fff',
-        fontWeight: 'bold',
-        fontSize: 16
-    }
-});
